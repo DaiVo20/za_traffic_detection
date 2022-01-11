@@ -4,26 +4,6 @@ import glob
 import numpy as np
 import random
 
-
-def file_lines_to_list(path):
-    '''
-    ### Convert Lines in TXT File to List ###
-    path: path to file
-    '''
-    with open(path) as f:
-        content = f.readlines()
-    content = [(x.strip()).split() for x in content]
-    return content
-
-def get_file_name(path):
-    '''
-    ### Get Filename of Filepath ###
-    path: path to file
-    '''
-    basename = os.path.basename(path)
-    onlyname = os.path.splitext(basename)[0]
-    return onlyname
-
 def colorjitter(img, cj_type="b"):
     '''
     ### Different Color Jitter ###
