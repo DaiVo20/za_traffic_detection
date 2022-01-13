@@ -1,5 +1,6 @@
 cython
 keras-resnet==0.2.0
+git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
 h5py
 keras
 matplotlib
