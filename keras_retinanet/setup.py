@@ -1,13 +1,20 @@
+import matplotlib.pyplot as plt
+import time
+import numpy as np
+import cv2
+from za_traffic_detection.keras_retinanet.keras_retinanet.utils.colors import label_color
+from za_traffic_detection.keras_retinanet.keras_retinanet.utils.visualization import draw_box, draw_caption
+from za_traffic_detection.keras_retinanet.keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
 import setuptools
 from setuptools.extension import Extension
 from distutils.command.build_ext import build_ext as DistUtilsBuildExt
 
 
 class BuildExtension(setuptools.Command):
-    description     = DistUtilsBuildExt.description
-    user_options    = DistUtilsBuildExt.user_options
+    description = DistUtilsBuildExt.description
+    user_options = DistUtilsBuildExt.user_options
     boolean_options = DistUtilsBuildExt.boolean_options
-    help_options    = DistUtilsBuildExt.help_options
+    help_options = DistUtilsBuildExt.help_options
 
     def __init__(self, *args, **kwargs):
         from setuptools.command.build_ext import build_ext as SetupToolsBuildExt
@@ -43,18 +50,19 @@ extensions = [
 
 
 setuptools.setup(
-    name             = 'keras-retinanet',
-    version          = '1.0.0',
-    description      = 'Keras implementation of RetinaNet object detection.',
-    url              = 'https://github.com/fizyr/keras-retinanet',
-    author           = 'Hans Gaiser',
-    author_email     = 'h.gaiser@fizyr.com',
-    maintainer       = 'Hans Gaiser',
-    maintainer_email = 'h.gaiser@fizyr.com',
-    cmdclass         = {'build_ext': BuildExtension},
-    packages         = setuptools.find_packages(),
-    install_requires = ['keras-resnet==0.2.0', 'six', 'numpy', 'cython', 'Pillow', 'opencv-python', 'progressbar2'],
-    entry_points     = {
+    name='keras-retinanet',
+    version='1.0.0',
+    description='Keras implementation of RetinaNet object detection.',
+    url='https://github.com/fizyr/keras-retinanet',
+    author='Hans Gaiser',
+    author_email='h.gaiser@fizyr.com',
+    maintainer='Hans Gaiser',
+    maintainer_email='h.gaiser@fizyr.com',
+    cmdclass={'build_ext': BuildExtension},
+    packages=setuptools.find_packages(),
+    install_requires=['keras-resnet==0.2.0', 'six', 'numpy',
+                      'cython', 'Pillow', 'opencv-python', 'progressbar2'],
+    entry_points={
         'console_scripts': [
             'retinanet-train=keras_retinanet.bin.train:main',
             'retinanet-evaluate=keras_retinanet.bin.evaluate:main',
@@ -62,6 +70,7 @@ setuptools.setup(
             'retinanet-convert-model=keras_retinanet.bin.convert_model:main',
         ],
     },
-    ext_modules    = extensions,
-    setup_requires = ["cython>=0.28", "numpy>=1.14.0"]
+    ext_modules=extensions,
+    setup_requires=["cython>=0.28", "numpy>=1.14.0"]
 )
+
