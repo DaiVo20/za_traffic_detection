@@ -1,8 +1,8 @@
 import tensorflow as tf
 import numpy as np
 import math
-from utils import convert_to_corners, compute_iou
-from data_processing import resize_and_pad_image
+from za_traffic_detection.keras_retinanet.retinanet.utils import convert_to_corners, compute_iou
+from za_traffic_detection.keras_retinanet.retinanet.data_processing import resize_and_pad_image
 from tensorflow import keras
 
 

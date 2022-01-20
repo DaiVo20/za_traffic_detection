@@ -2,8 +2,8 @@ import math
 import tensorflow as tf
 import utils
 import os
-import model as m
-import losses
+import za_traffic_detection.keras_retinanet.retinanet.model as m
+import za_traffic_detection.keras_retinanet.retinanet.losses
 import numpy as np
 import json
 import argparse
@@ -11,7 +11,7 @@ import datetime
 import glob
 import cv2
 from tqdm import tqdm
-from utils import visualize_detections
+from za_traffic_detection.keras_retinanet.retinanet.utils import visualize_detections
 
 LABEL_MAP = {
     1: "No entry",

@@ -1,8 +1,8 @@
 import tensorflow as tf
 import numpy as np
-import data_augmentation as augmentation
+import za_traffic_detection.keras_retinanet.retinanet.data_augmentation as augmentation
 import pandas as pd
-from utils import (
+from za_traffic_detection.keras_retinanet.retinanet.utils import (
     resize_and_pad_image,
     swap_xy,
     convert_to_xywh,
@@ -98,7 +98,7 @@ class DataProcessing:
                  origin_height=626,
                  width=400,
                  height=154,
-                 augment=False,
+                 augment=True,
                  mix_iterator=None,
                  convert_xywh=True,
                  random_cropping=True,
@@ -201,7 +201,7 @@ class DataProcessing:
             tf.greater(x1_b, x1 - pad_size),
             tf.less(x2_b, x1 + width + pad_size)
         )
-        
+
         # 3. y1 of box> cropped height
         # 4. y2 of box> cropped height
         y_condition = tf.logical_and(
@@ -244,32 +244,45 @@ class DataProcessing:
                 bbox = convert_to_xywh(bbox)
             return image, bbox, label
 
-        # Data augmentation
-        image = augmentation.random_adjust_brightness(image)
-        image = augmentation.random_adjust_contrast(image)
-
-        # crop the region contain at least 1 bounding box
-        has_smallb = has_small_bbox(bbox)
-        if self.random_cropping and tf.logical_or(has_smallb, tf.random.uniform(()) > 0.5):
-            image, bbox, label = self.random_crop(image, bbox, label)
-
         bbox = normalize_bbox(bbox, self.origin_width, self.origin_height)
-        image, bbox = augmentation.random_flip_horizontal(image, bbox)
-
-        if not has_smallb:
-            image = augmentation.random_gaussian_blur(image, 0.5)
-
         image, image_shape, _ = resize_and_pad_image(image, jitter=None)
         w, h = image_shape[0], image_shape[1]
-
         bbox = tf.stack([
             bbox[:, 0] * h,
             bbox[:, 1] * w,
             bbox[:, 2] * h,
             bbox[:, 3] * w,
         ], axis=-1)
-
         if self.convert_xywh:
             bbox = convert_to_xywh(bbox)
-
         return image, bbox, label
+
+        # # Data augmentation
+        # image = augmentation.random_adjust_brightness(image)
+        # image = augmentation.random_adjust_contrast(image)
+
+        # # crop the region contain at least 1 bounding box
+        # has_smallb = has_small_bbox(bbox)
+        # if self.random_cropping and tf.logical_or(has_smallb, tf.random.uniform(()) > 0.5):
+        #     image, bbox, label = self.random_crop(image, bbox, label)
+
+        # bbox = normalize_bbox(bbox, self.origin_width, self.origin_height)
+        # image, bbox = augmentation.random_flip_horizontal(image, bbox)
+
+        # if not has_smallb:
+        #     image = augmentation.random_gaussian_blur(image, 0.5)
+
+        # image, image_shape, _ = resize_and_pad_image(image, jitter=None)
+        # w, h = image_shape[0], image_shape[1]
+
+        # bbox = tf.stack([
+        #     bbox[:, 0] * h,
+        #     bbox[:, 1] * w,
+        #     bbox[:, 2] * h,
+        #     bbox[:, 3] * w,
+        # ], axis=-1)
+
+        # if self.convert_xywh:
+        #     bbox = convert_to_xywh(bbox)
+
+        # return image, bbox, label
