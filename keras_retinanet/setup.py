@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import cv2
-from za_traffic_detection.keras_retinanet.keras_retinanet.utils.colors import label_color
-from za_traffic_detection.keras_retinanet.keras_retinanet.utils.visualization import draw_box, draw_caption
-from za_traffic_detection.keras_retinanet.keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
+from keras_retinanet.utils.colors import label_color
+from keras_retinanet.utils.visualization import draw_box, draw_caption
+from keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
 import setuptools
 from setuptools.extension import Extension
 from distutils.command.build_ext import build_ext as DistUtilsBuildExt

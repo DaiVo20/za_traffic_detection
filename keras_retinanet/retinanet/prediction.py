@@ -1,9 +1,7 @@
 import math
+from pickletools import uint2
 import tensorflow as tf
-import utils
 import os
-import za_traffic_detection.keras_retinanet.retinanet.model as m
-import za_traffic_detection.keras_retinanet.retinanet.losses
 import numpy as np
 import json
 import argparse
@@ -11,6 +9,9 @@ import datetime
 import glob
 import cv2
 from tqdm import tqdm
+import za_traffic_detection.keras_retinanet.retinanet.model as m
+import za_traffic_detection.keras_retinanet.retinanet.losses as l
+import za_traffic_detection.keras_retinanet.retinanet.utils as u
 from za_traffic_detection.keras_retinanet.retinanet.utils import visualize_detections
 
 LABEL_MAP = {
@@ -113,7 +114,7 @@ class Prediction:
                     small_img = tf.slice(image, [start_y, start_x, 0], [
                                          self.crop_height, self.crop_size, 3])
 
-                    croped, _, ratio = utils.resize_and_pad_image(small_img,
+                    croped, _, ratio = u.resize_and_pad_image(small_img,
                                                                   crop_size,
                                                                   crop_size, jitter=None)
                     train_imgs.append(tf.expand_dims(croped, axis=0))
@@ -122,7 +123,7 @@ class Prediction:
             return [tf.keras.applications.resnet.preprocess_input(i) for i in train_imgs], image, ratio
 
         else:
-            train_img, _, ratio = utils.resize_and_pad_image(image,
+            train_img, _, ratio = u.resize_and_pad_image(image,
                                                              crop_size,
                                                              crop_size,
                                                              jitter=None)
@@ -232,7 +233,7 @@ class Prediction:
 def get_inference_model(weight_path, backbone="resnet50"):
     num_of_classes = 7
     model = m.RetinaNet(num_of_classes, backbone=backbone)
-    model.compile(optimizer="adam", loss=losses.RetinaNetLoss(num_of_classes))
+    model.compile(optimizer="adam", loss=l.RetinaNetLoss(num_of_classes))
     model.build((1, None, None, 3))
     image = tf.keras.Input(shape=[None, None, 3], name="image")
     model.load_weights(weight_path)
