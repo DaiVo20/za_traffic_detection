@@ -201,8 +201,8 @@ def getBoundingBoxes(directory,
 currentPath = os.path.dirname(os.path.abspath(__file__))
 
 VERSION = '0.2 (beta)'
-
-with open('message.txt', 'r') as f:
+path_message = 'za_traffic_detection\keras_retinanet\evaluation\pascalvoc.py'
+with open(path_message, 'r') as f:
     message = f'\n\n{f.read()}\n\n'
 
 print(message)
